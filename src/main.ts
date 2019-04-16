@@ -1,5 +1,6 @@
-import * as dotenv from 'dotenv';
-dotenv.config();
+// Load Env Variables with Dotenv
+import { config } from 'dotenv';
+config();
 
 import { NestFactory } from '@nestjs/core';
 import { Logger, ValidationPipe } from '@nestjs/common';
