@@ -10,8 +10,8 @@ export class UserService {
   constructor(@InjectRepository(User) private readonly userRepository: Repository<User>) { }
 
   // Create User Instance
-  async createUser(data: CreateUserDto): Promise<User> {
-    return await this.userRepository.create(data);
+  async createUser(createUserDto: CreateUserDto): Promise<User> {
+    return await this.userRepository.create(createUserDto);
   }
 
   // Add a User in the Database
