@@ -5,6 +5,7 @@ import { AppService } from './app.service';
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
 import { DogModule } from './dog/dog.module';
+import { PostModule } from './post/post.module';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { DogModule } from './dog/dog.module';
     UserModule,
     AuthModule,
     DogModule,
+    PostModule,
   ],
   controllers: [AppController],
   providers: [AppService],
