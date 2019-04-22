@@ -12,22 +12,22 @@ export class UserService {
   ) {}
 
   // Create User Instance and return it
-  async createUser(createUserDto: CreateUserDto): Promise<User> {
+  async create(createUserDto: CreateUserDto): Promise<User> {
     return await this.userRepository.create(createUserDto);
   }
 
   // Add a User in the Database
-  async saveUser(user: User): Promise<User> {
+  async save(user: User): Promise<User> {
     return await this.userRepository.save(user);
   }
 
   // Return the user with the given email
-  async findUserByEmail(email: string): Promise<User> {
+  async findByEmail(email: string): Promise<User> {
     return await this.userRepository.findOne({ where: { email } });
   }
 
   // Return the user with the given id
-  async findUserById(id: string): Promise<User> {
+  async findById(id: string): Promise<User> {
     return await this.userRepository.findOne(id);
   }
 }
