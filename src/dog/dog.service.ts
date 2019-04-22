@@ -20,4 +20,9 @@ export class DogService {
   async save(dog: Dog): Promise<Dog> {
     return await this.dogRepository.save(dog);
   }
+
+  // Return a dog entity given its id
+  async findById(id: string): Promise<Dog> {
+    return await this.dogRepository.findOne(id);
+  }
 }
