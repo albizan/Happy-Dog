@@ -11,7 +11,13 @@ export class DogService {
     @InjectRepository(Dog) private readonly dogRepository: Repository<Dog>,
   ) {}
 
-  async createDog(createDogDto: CreateDogDto): Promise<Dog> {
+  // Create Dog Instance and return it
+  async create(createDogDto: CreateDogDto): Promise<Dog> {
     return await this.dogRepository.create(createDogDto);
+  }
+
+  // Add a Dog to the Database
+  async save(dog: Dog): Promise<Dog> {
+    return await this.dogRepository.save(dog);
   }
 }
