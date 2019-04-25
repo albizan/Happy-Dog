@@ -38,6 +38,8 @@ export class User {
   posts: Post[];
 
   @ManyToMany(type => Role)
-  @JoinTable()
+  @JoinTable({
+    name: 'user_role',
+  })
   roles: Role[];
 }
