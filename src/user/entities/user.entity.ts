@@ -6,9 +6,11 @@ import {
   UpdateDateColumn,
   ManyToMany,
   JoinTable,
+  OneToMany,
 } from 'typeorm';
 
 import { Role } from './role.entity';
+import { Post } from '../../post/entities/post.entity';
 
 @Entity()
 export class User {
@@ -31,6 +33,9 @@ export class User {
 
   @UpdateDateColumn()
   updatedAt: Date;
+
+  @OneToMany(type => Post, post => post.user)
+  posts: Post[];
 
   @ManyToMany(type => Role)
   @JoinTable()
