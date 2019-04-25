@@ -6,10 +6,12 @@ import {
   OneToOne,
   JoinColumn,
   ManyToOne,
+  Entity,
 } from 'typeorm';
 import { User } from '../../user/entities/user.entity';
 import { Dog } from '../../dog/entities/dog.entity';
 
+@Entity()
 export class Post {
   @PrimaryGeneratedColumn()
   id: string;
