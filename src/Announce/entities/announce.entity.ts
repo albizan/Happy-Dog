@@ -12,7 +12,7 @@ import { User } from '../../user/entities/user.entity';
 import { Dog } from '../../dog/entities/dog.entity';
 
 @Entity()
-export class Post {
+export class Announce {
   @PrimaryGeneratedColumn()
   id: string;
 

@@ -10,7 +10,7 @@ import {
 } from 'typeorm';
 
 import { Role } from './role.entity';
-import { Post } from '../../post/entities/post.entity';
+import { Announce } from '../../Announce/entities/announce.entity';
 
 @Entity()
 export class User {
@@ -34,8 +34,8 @@ export class User {
   @UpdateDateColumn()
   updatedAt: Date;
 
-  @OneToMany(type => Post, post => post.user)
-  posts: Post[];
+  @OneToMany(type => Announce, announce => announce.user)
+  posts: Announce[];
 
   @ManyToMany(type => Role)
   @JoinTable({
