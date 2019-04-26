@@ -10,7 +10,7 @@ import {
 } from 'typeorm';
 
 import { Role } from './role.entity';
-import { Announce } from '../../Announce/entities/announce.entity';
+import { Announce } from '../../announce/entities/announce.entity';
 
 @Entity()
 export class User {

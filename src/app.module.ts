@@ -5,7 +5,7 @@ import { AppService } from './app.service';
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
 import { DogModule } from './dog/dog.module';
-import { AnnounceModule } from './Announce/announce.module';
+import { AnnounceModule } from './announce/announce.module';
 
 @Module({
   imports: [
