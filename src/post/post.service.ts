@@ -42,6 +42,9 @@ export class PostService {
 
     // Complete the Relation inserting created dog in the post
     post.dog = dog;
+
+    // Return the created Post
+    return post;
   }
 
   // Save a Post Instance in the database
