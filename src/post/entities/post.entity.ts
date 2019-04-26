@@ -23,7 +23,7 @@ export class Post {
   title: string;
 
   @Column()
-  text: string;
+  description: string;
 
   @CreateDateColumn()
   createdAt: Date;
