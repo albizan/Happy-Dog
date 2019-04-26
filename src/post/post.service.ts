@@ -25,12 +25,12 @@ export class PostService {
     const { title, description, shelter } = createPostDto;
 
     // Create and Save a Dog Instance before saving the post in the database
-    const dog: Dog = await this.dogService.create({
+    let dog: Dog = await this.dogService.create({
       name,
       breed,
       age,
     });
-    await this.dogService.save(dog);
+    dog = await this.dogService.save(dog);
 
     // Create a Post instance
     const post: Post = await this.postRepository.create();
@@ -40,7 +40,7 @@ export class PostService {
     post.description = description;
     post.shelter = shelter;
 
-    // Complete the Relation inserting dog in the post
+    // Complete the Relation inserting created dog in the post
     post.dog = dog;
   }
 
@@ -53,6 +53,6 @@ export class PostService {
 
   // Get all posts
   async findAll(): Promise<Post[]> {
-    return this.postRepository.find();
+    return await this.postRepository.find();
   }
 }
