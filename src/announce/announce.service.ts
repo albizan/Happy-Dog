@@ -17,7 +17,7 @@ export class AnnounceService {
   ) {}
 
   // Create a announce Instance and return it
-  async create(createAnnounceDto: CreateAnnounceDto) {
+  async create(createAnnounceDto: CreateAnnounceDto, user: User) {
     // Destructuring dog properties from createannounceDto
     const { name, breed, age } = createAnnounceDto;
 
@@ -40,8 +40,9 @@ export class AnnounceService {
     announce.description = description;
     announce.shelter = shelter;
 
-    // Complete the Relation inserting created dog in the announce
+    // Complete the Relation inserting created dog and received user in the announce
     announce.dog = dog;
+    announce.user = user;
 
     // Return the created announce
     return announce;
