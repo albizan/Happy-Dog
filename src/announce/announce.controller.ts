@@ -34,6 +34,14 @@ export class AnnounceController {
       'Received Post request to create new announce',
       'AnnounceController',
     );
-    return this.announceService.create(createAnnounceDto, user);
+
+    // Create new announce
+    const announce: Announce = await this.announceService.create(
+      createAnnounceDto,
+      user,
+    );
+
+    // Save created announce
+    return await this.announceService.save(announce);
   }
 }
