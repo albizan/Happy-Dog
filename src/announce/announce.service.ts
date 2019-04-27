@@ -49,6 +49,9 @@ export class AnnounceService {
   }
 
   // Save a announce Instance in the database
+  async save(announce: Announce): Promise<Announce> {
+    return await this.announceRepository.save(announce);
+  }
 
   // Get a announce given its ID
   async findById(id: string): Promise<Announce> {
