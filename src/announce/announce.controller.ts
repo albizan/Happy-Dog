@@ -1,12 +1,4 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Logger,
-  UseGuards,
-  Req,
-  Body,
-} from '@nestjs/common';
+import { Controller, Get, Post, Logger, UseGuards, Body } from '@nestjs/common';
 import { Announce } from './entities/announce.entity';
 import { AnnounceService } from './announce.service';
 import { AuthGuard } from '@nestjs/passport';
@@ -29,7 +21,7 @@ export class AnnounceController {
   async create(
     @GetUser() user: User,
     @Body() createAnnounceDto: CreateAnnounceDto,
-  ) {
+  ): Promise<Announce> {
     Logger.log(
       'Received Post request to create new announce',
       'AnnounceController',
@@ -42,9 +34,6 @@ export class AnnounceController {
     );
 
     // Save newly created announce to the database
-    return await this.announceService.save(announce);
-
-    // Save created announce
-    return await this.announceService.save(announce);
+    await this.announceService.save(announce);
   }
 }
