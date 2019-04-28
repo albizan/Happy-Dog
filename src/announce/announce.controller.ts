@@ -34,6 +34,8 @@ export class AnnounceController {
     );
 
     // Save newly created announce to the database
-    await this.announceService.save(announce);
+    return await this.announceService.save(announce);
+
+    // @TODO Remove sensitive info from user
   }
 }
