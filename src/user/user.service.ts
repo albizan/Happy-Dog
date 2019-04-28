@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 
 import { User } from './entities/user.entity';
 import { CreateUserDto } from './dtos/createUser.dto';
+import { UserResponseDto } from './dtos/userResponse.dto';
 
 @Injectable()
 export class UserService {
@@ -29,5 +30,17 @@ export class UserService {
   // Return the user with the given id
   async findById(id: string): Promise<User> {
     return await this.userRepository.findOne(id);
+  }
+
+  // Return basic user info without sending private information
+  toResponseObject(user: User): UserResponseDto {
+    const responseObject = new UserResponseDto();
+    const properties: string[] = Object.keys(user);
+    properties.forEach(prop => {
+      if (prop !== 'password') {
+        responseObject[prop] = user[prop];
+      }
+    });
+    return responseObject;
   }
 }
