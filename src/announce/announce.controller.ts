@@ -41,6 +41,9 @@ export class AnnounceController {
       user,
     );
 
+    // Save newly created announce to the database
+    return await this.announceService.save(announce);
+
     // Save created announce
     return await this.announceService.save(announce);
   }
