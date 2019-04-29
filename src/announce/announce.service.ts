@@ -6,6 +6,8 @@ import { Announce } from './entities/announce.entity';
 import { CreateAnnounceDto } from './dtos/createAnnounce.dto';
 import { User } from '../user/entities/user.entity';
 import { Dog } from '../dog/entities/dog.entity';
+import { AnnounceResponseDto } from './dtos/announceResponse.dto';
+import { UserService } from '../user/user.service';
 import { DogService } from '../dog/dog.service';
 
 @Injectable()
@@ -14,6 +16,7 @@ export class AnnounceService {
     @InjectRepository(Announce)
     private readonly announceRepository: Repository<Announce>,
     private readonly dogService: DogService,
+    private readonly userService: UserService,
   ) {}
 
   // Create a announce Instance and return it
@@ -61,5 +64,13 @@ export class AnnounceService {
   // Get all announces
   async findAll(): Promise<Announce[]> {
     return await this.announceRepository.find();
+  }
+
+  // Filter announce properties
+  toResponseObject(announce: Announce): AnnounceResponseDto {
+    return {
+      ...announce,
+      user: this.userService.toResponseObject(announce.user),
+    };
   }
 }
