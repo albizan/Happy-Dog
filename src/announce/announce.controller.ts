@@ -5,6 +5,7 @@ import { AuthGuard } from '@nestjs/passport';
 import { CreateAnnounceDto } from './dtos/createAnnounce.dto';
 import { GetUser } from '../user/decorators/user.decorator';
 import { User } from '../user/entities/user.entity';
+import { AnnounceResponseDto } from './dtos/announceResponse.dto';
 
 @Controller('announce')
 export class AnnounceController {
@@ -21,21 +22,22 @@ export class AnnounceController {
   async create(
     @GetUser() user: User,
     @Body() createAnnounceDto: CreateAnnounceDto,
-  ): Promise<Announce> {
+  ): Promise<AnnounceResponseDto> {
     Logger.log(
       'Received Post request to create new announce',
       'AnnounceController',
     );
 
     // Create new announce
-    const announce: Announce = await this.announceService.create(
+    let announce: Announce = await this.announceService.create(
       createAnnounceDto,
       user,
     );
 
     // Save newly created announce to the database
-    return await this.announceService.save(announce);
+    announce = await this.announceService.save(announce);
 
     // @TODO Remove sensitive info from user
+    return this.announceService.toResponseObject(announce);
   }
 }
