@@ -20,9 +20,7 @@ export class AnnounceService {
   ) {}
 
   // Create a announce Instance and return it
-  async create(createAnnounceDto: CreateAnnounceDto, userId: string) {
-    // Get User
-    const user: User = await this.userService.findById(userId);
+  async create(createAnnounceDto: CreateAnnounceDto, user: User) {
 
     // Destructuring dog properties from createannounceDto
     const { name, breed, age } = createAnnounceDto;
@@ -77,7 +75,8 @@ export class AnnounceService {
   // Get announce list of the given user
   async findAllAnnouncesByUser(id: string) {
     const user: User = await this.userService.findById(id);
-    return user.announces.map(announce => {
+    const announces: Announce[] = user.announces || null;
+    return announces.map(announce => {
       return this.toResponseObject(announce);
     });
   }
