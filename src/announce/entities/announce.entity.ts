@@ -31,7 +31,7 @@ export class Announce {
   @UpdateDateColumn()
   updatedAt: Date;
 
-  @ManyToOne(type => User, user => user.posts)
+  @ManyToOne(type => User, user => user.announces)
   user: User;
 
   @OneToOne(type => Dog)
