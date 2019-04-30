@@ -32,19 +32,18 @@ export class AnnounceController {
     @GetUser() user: User,
     @Body() createAnnounceDto: CreateAnnounceDto,
   ): Promise<AnnounceResponseDto> {
-    Logger.log(
-      'Received Post request to create new announce',
-      'AnnounceController',
-    );
+    Logger.log('Creating new announce', 'AnnounceController');
 
     // Create new announce
     let announce: Announce = await this.announceService.create(
       createAnnounceDto,
-      user,
+      user.id,
     );
 
     // Save newly created announce to the database
     announce = await this.announceService.save(announce);
+
+    Logger.log(announce.user.id, 'AnnounceController');
 
     // Remove sensitive info from user
     return this.announceService.toResponseObject(announce);
