@@ -13,7 +13,7 @@ import { Dog } from '../../dog/entities/dog.entity';
 
 @Entity()
 export class Announce {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @Column()
