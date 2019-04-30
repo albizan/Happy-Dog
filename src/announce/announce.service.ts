@@ -19,9 +19,10 @@ export class AnnounceService {
     private readonly userService: UserService,
   ) {}
 
+  private logger = new Logger('AnnounceService');
+
   // Create a announce Instance and return it
   async create(createAnnounceDto: CreateAnnounceDto, user: User) {
-
     // Destructuring dog properties from createannounceDto
     const { name, breed, age } = createAnnounceDto;
 
@@ -66,23 +67,28 @@ export class AnnounceService {
 
   // Get all announces
   async findAll(): Promise<AnnounceResponseDto[]> {
-    const announces = await this.announceRepository.find();
-    return announces.map(announce => {
-      return this.toResponseObject(announce);
+    const announces = await this.announceRepository.find({
+      relations: ['dog', 'user'],
     });
+    const response: AnnounceResponseDto[] = announces.map(ann => {
+      return this.toResponseObject(ann);
+    });
+    return response;
   }
 
   // Get announce list of the given user
-  async findAllAnnouncesByUser(id: string) {
+  async findAllAnnouncesByUser(id: string): Promise<AnnounceResponseDto[]> {
     const user: User = await this.userService.findById(id);
-    const announces: Announce[] = user.announces || null;
-    return announces.map(announce => {
-      return this.toResponseObject(announce);
+    return user.announces.map(ann => {
+      return this.toResponseObject(ann);
     });
   }
 
   // Filter announce properties
   toResponseObject(announce: Announce): AnnounceResponseDto {
+    if (!announce.user) {
+      return announce;
+    }
     return {
       ...announce,
       user: this.userService.toResponseObject(announce.user),
