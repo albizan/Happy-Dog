@@ -31,11 +31,13 @@ export class UserService {
 
   // Return the user with the given email
   async findByEmail(email: string): Promise<User> {
+    // Get an user instance without relations
     return await this.userRepository.findOne({ where: { email } });
   }
 
   // Return the user with the given id
   async findById(id: string): Promise<User> {
+    // Get user instance with relation of announces
     return await this.userRepository.findOne(id, {
       relations: ['announces'],
     });
