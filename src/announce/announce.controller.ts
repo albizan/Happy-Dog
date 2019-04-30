@@ -11,9 +11,11 @@ import { AnnounceResponseDto } from './dtos/announceResponse.dto';
 export class AnnounceController {
   constructor(private readonly announceService: AnnounceService) {}
 
+  private logger = new Logger('AnnounceController');
+
   @Get()
   async findAll(): Promise<AnnounceResponseDto[]> {
-    Logger.log('Retreiving all Posts', 'AnnounceController');
+    this.logger.log('Retreiving all Posts');
     return await this.announceService.findAll();
   }
 
@@ -22,7 +24,7 @@ export class AnnounceController {
   async findAllAnnouncesbyUser(
     @GetUser() user: User,
   ): Promise<AnnounceResponseDto[]> {
-    Logger.log('Retreving announces of given user', 'AnnounceController');
+    this.logger.log('Retreving User announces');
     return this.announceService.findAllAnnouncesByUser(user.id);
   }
 
@@ -32,7 +34,7 @@ export class AnnounceController {
     @GetUser() user: User,
     @Body() createAnnounceDto: CreateAnnounceDto,
   ): Promise<AnnounceResponseDto> {
-    Logger.log('Creating new announce', 'AnnounceController');
+    this.logger.log('Creating new announce');
 
     // Create new announce
     let announce: Announce = await this.announceService.create(
@@ -43,7 +45,7 @@ export class AnnounceController {
     // Save newly created announce to the database
     announce = await this.announceService.save(announce);
 
-    Logger.log('Announce created correctly', 'AnnounceController');
+    this.logger.log('Announce created correctly');
 
     // Remove sensitive info from user
     return this.announceService.toResponseObject(announce);
