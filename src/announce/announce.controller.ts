@@ -12,7 +12,7 @@ export class AnnounceController {
   constructor(private readonly announceService: AnnounceService) {}
 
   @Get()
-  async findAll(): Promise<Announce[]> {
+  async findAll(): Promise<AnnounceResponseDto[]> {
     Logger.log('Retreiving all Posts', 'PostController');
     return await this.announceService.findAll();
   }
