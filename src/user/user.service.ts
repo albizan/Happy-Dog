@@ -53,8 +53,4 @@ export class UserService {
     });
     return responseObject;
   }
-
-  addAnnounceToUser(user: User, announce: Announce) {
-    user.announces.push(announce);
-  }
 }
