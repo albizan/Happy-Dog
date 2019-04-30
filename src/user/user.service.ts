@@ -20,7 +20,6 @@ export class UserService {
       announces: [],
       roles: [],
     });
-    Logger.log(user);
     return user;
   }
 
@@ -48,7 +47,7 @@ export class UserService {
     const responseObject = new UserResponseDto();
     const properties: string[] = Object.keys(user);
     properties.forEach(prop => {
-      if (prop !== 'password') {
+      if (prop === 'id' || prop === 'name') {
         responseObject[prop] = user[prop];
       }
     });
