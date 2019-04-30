@@ -47,6 +47,9 @@ export class AnnounceService {
     announce.dog = dog;
     announce.user = user;
 
+    // Add newly created announce to user ones
+    this.userService.addAnnounceToUser(user, announce);
+
     // Return the created announce
     return announce;
   }
@@ -64,6 +67,14 @@ export class AnnounceService {
   // Get all announces
   async findAll(): Promise<Announce[]> {
     return await this.announceRepository.find();
+  }
+
+  // Get announce list of the given user
+  async findAllAnnouncesByUser(id: string) {
+    const user: User = await this.userService.findById(id);
+    return user.announces.map(announce => {
+      return this.toResponseObject(announce);
+    });
   }
 
   // Filter announce properties
