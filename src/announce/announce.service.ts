@@ -65,8 +65,11 @@ export class AnnounceService {
   }
 
   // Get all announces
-  async findAll(): Promise<Announce[]> {
-    return await this.announceRepository.find();
+  async findAll(): Promise<AnnounceResponseDto[]> {
+    const announces = await this.announceRepository.find();
+    return announces.map(announce => {
+      return this.toResponseObject(announce);
+    });
   }
 
   // Get announce list of the given user
