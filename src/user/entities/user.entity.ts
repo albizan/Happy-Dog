@@ -35,7 +35,7 @@ export class User {
   updatedAt: Date;
 
   @OneToMany(type => Announce, announce => announce.user)
-  posts: Announce[];
+  announces: Announce[];
 
   @ManyToMany(type => Role)
   @JoinTable({
