@@ -13,7 +13,7 @@ export class AnnounceController {
 
   @Get()
   async findAll(): Promise<AnnounceResponseDto[]> {
-    Logger.log('Retreiving all Posts', 'PostController');
+    Logger.log('Retreiving all Posts', 'AnnounceController');
     return await this.announceService.findAll();
   }
 
@@ -37,13 +37,13 @@ export class AnnounceController {
     // Create new announce
     let announce: Announce = await this.announceService.create(
       createAnnounceDto,
-      user.id,
+      user,
     );
 
     // Save newly created announce to the database
     announce = await this.announceService.save(announce);
 
-    Logger.log(announce.user.id, 'AnnounceController');
+    Logger.log('Announce created correctly', 'AnnounceController');
 
     // Remove sensitive info from user
     return this.announceService.toResponseObject(announce);
