@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
@@ -20,7 +20,10 @@ export class AnnounceService {
   ) {}
 
   // Create a announce Instance and return it
-  async create(createAnnounceDto: CreateAnnounceDto, user: User) {
+  async create(createAnnounceDto: CreateAnnounceDto, userId: string) {
+    // Get User
+    const user: User = await this.userService.findById(userId);
+
     // Destructuring dog properties from createannounceDto
     const { name, breed, age } = createAnnounceDto;
 
@@ -36,19 +39,18 @@ export class AnnounceService {
     dog = await this.dogService.save(dog);
 
     // Create a announce instance
-    const announce: Announce = await this.announceRepository.create();
+    const announce: Announce = await this.announceRepository.create({
+      title,
+      description,
+      shelter,
+      dog,
+      user,
+    });
 
-    // Populate the instance with the properties from the createannounceDto
-    announce.title = title;
-    announce.description = description;
-    announce.shelter = shelter;
-
-    // Complete the Relation inserting created dog and received user in the announce
-    announce.dog = dog;
-    announce.user = user;
+    Logger.log('Announce created', 'AnnounceService');
 
     // Add newly created announce to user ones
-    this.userService.addAnnounceToUser(user, announce);
+    // this.userService.addAnnounceToUser(user, announce);
 
     // Return the created announce
     return announce;
