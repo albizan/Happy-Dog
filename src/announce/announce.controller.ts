@@ -17,6 +17,15 @@ export class AnnounceController {
     return await this.announceService.findAll();
   }
 
+  @Get('/my-announces')
+  @UseGuards(AuthGuard())
+  async findAllAnnouncesbyUser(
+    @GetUser() user: User,
+  ): Promise<AnnounceResponseDto[]> {
+    Logger.log('Retreving announces of given user', 'AnnounceController');
+    return this.announceService.findAllAnnouncesByUser(user.id);
+  }
+
   @Post()
   @UseGuards(AuthGuard())
   async create(
@@ -37,7 +46,7 @@ export class AnnounceController {
     // Save newly created announce to the database
     announce = await this.announceService.save(announce);
 
-    // @TODO Remove sensitive info from user
+    // Remove sensitive info from user
     return this.announceService.toResponseObject(announce);
   }
 }
