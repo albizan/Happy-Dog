@@ -45,8 +45,6 @@ export class AnnounceController {
     // Save newly created announce to the database
     announce = await this.announceService.save(announce);
 
-    this.logger.log('Announce created correctly');
-
     // Remove sensitive info from user
     return this.announceService.toResponseObject(announce);
   }
