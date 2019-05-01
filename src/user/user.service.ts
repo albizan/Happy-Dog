@@ -44,13 +44,10 @@ export class UserService {
 
   // Return basic user info without sending private information
   toResponseObject(user: User): UserResponseDto {
-    const responseObject = new UserResponseDto();
-    const properties: string[] = Object.keys(user);
-    properties.forEach(prop => {
-      if (prop === 'id' || prop === 'name') {
-        responseObject[prop] = user[prop];
-      }
-    });
-    return responseObject;
+    const { id, name } = user;
+    return {
+      id,
+      name,
+    };
   }
 }
