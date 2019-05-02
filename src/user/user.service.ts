@@ -1,11 +1,11 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable, Logger, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
 import { User } from './entities/user.entity';
 import { CreateUserDto } from './dtos/createUser.dto';
 import { UserResponseDto } from './dtos/userResponse.dto';
-import { Announce } from 'src/announce/entities/announce.entity';
+import { UpdateUserDto } from './dtos/updateUser.dto';
 
 @Injectable()
 export class UserService {
@@ -26,6 +26,24 @@ export class UserService {
   // Add a User in the Database
   async save(user: User): Promise<User> {
     return await this.userRepository.save(user);
+  }
+
+  async update(
+    user: User,
+    id: string,
+    updateUserDto: Partial<UpdateUserDto>,
+  ): Promise<UpdateUserDto> {
+    this.ensureCorrectUser(user, id);
+    const updatedUser = await this.userRepository.preload({
+      id,
+      ...updateUserDto,
+    });
+    await this.userRepository.save(updatedUser);
+    return {
+      id: updatedUser.id,
+      name: updatedUser.name,
+      email: updatedUser.email,
+    };
   }
 
   // Return the user with the given email
@@ -49,5 +67,12 @@ export class UserService {
       id,
       name,
     };
+  }
+
+  // Ensure users can update only their own info
+  ensureCorrectUser(user: User, id: string): void {
+    if (user.id !== id) {
+      throw new UnauthorizedException('Cannot Update, IDs mismatching');
+    }
   }
 }
