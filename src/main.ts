@@ -8,10 +8,9 @@ import { Logger, ValidationPipe } from '@nestjs/common';
 import { AppModule } from './app.module';
 
 async function bootstrap() {
-  // Contants
   const HTTP_PORT = Number(process.env.HTTP_PORT);
-
   const app = await NestFactory.create(AppModule);
+  const logger = new Logger('Bootstrap');
 
   // Use CORS
   app.enableCors();
@@ -20,6 +19,6 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe());
 
   await app.listen(HTTP_PORT);
-  Logger.log(`App running on port: ${HTTP_PORT}`, 'Bootstrap');
+  logger.log(`App running on port ${HTTP_PORT}`);
 }
 bootstrap();
