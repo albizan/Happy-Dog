@@ -2,15 +2,20 @@ import {
   Injectable,
   BadRequestException,
   UnauthorizedException,
+  Logger,
+  InternalServerErrorException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
+
+import * as bcrypt from 'bcryptjs';
+import * as nodemailer from 'nodemailer';
+import cryptoRandomString = require('crypto-random-string');
 
 import { CredentialsDto } from './dtos/credentials.dto';
 import { RegisterUserDto } from './dtos/registerUser.dto';
 import { JwtPayload } from './interfaces/jwt-payload.interface';
 import { User } from '../user/entities/user.entity';
 import { UserService } from '../user/user.service';
-import * as bcrypt from 'bcryptjs';
 
 @Injectable()
 export class AuthService {
@@ -18,6 +23,8 @@ export class AuthService {
     private readonly userService: UserService,
     private readonly jwtService: JwtService,
   ) {}
+
+  logger = new Logger('AuthService');
 
   async register(registerUserDto: RegisterUserDto): Promise<string> {
     const { name, email, password } = registerUserDto;
@@ -101,5 +108,42 @@ export class AuthService {
   async validateUser(payload: JwtPayload): Promise<any> {
     const { email } = payload;
     return await this.userService.findByEmail(email);
+  }
+
+  generateToken(): string {
+    const tokenLength: number = 32;
+    return cryptoRandomString(tokenLength);
+  }
+
+  buildLink(token: string) {
+    return `localhost:4000/reset-password/${token}`;
+  }
+
+  async sendResetToken(userMail: string): Promise<boolean> {
+    // Create reset_token
+    const token: string = this.generateToken();
+    const link: string = this.buildLink(token);
+
+    // Send email with token
+    const transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: process.env.EMAIL,
+        pass: process.env.EMAIL_PASSWORD,
+      },
+    });
+    const mailOptions = {
+      from: process.env.EMAIL,
+      to: userMail,
+      subject: 'Reset Your Password',
+      html: `<p>Click <a href="${link}">here</a> to reset your password</p>
+      <p>Or copy paste the following link in the browser: ${link}</p>`,
+    };
+    try {
+      transporter.sendMail(mailOptions);
+      return true;
+    } catch (err) {
+      throw new InternalServerErrorException('Cannot send reset token');
+    }
   }
 }
