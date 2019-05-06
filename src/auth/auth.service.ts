@@ -118,13 +118,13 @@ export class AuthService {
   }
 
   buildLink(token: string) {
-    return `localhost:4000/reset-password/${token}`;
+    return `http:localhost:4000/reset-password/${token}`;
   }
 
   async sendResetToken(userMail: string): Promise<boolean> {
     /*
       Verify the existence of the submitted email
-      If the usermail is not found, throw an exception, else continue
+      If the usermail is not found, throw an exception, otherwise continue
     */
     const exists = await this.userService.existsByEmail(userMail);
     if (!exists) {
