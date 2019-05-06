@@ -17,6 +17,7 @@ import { JwtPayload } from './interfaces/jwt-payload.interface';
 import { User } from '../user/entities/user.entity';
 import { UserService } from '../user/user.service';
 import { MailService } from '../mail/mail.service';
+import { NewPasswordDto } from './dtos/newPassword.dto';
 
 @Injectable()
 export class AuthService {
@@ -131,8 +132,14 @@ export class AuthService {
       throw new UnauthorizedException('Cannot found this email');
     }
 
+    // Get involved user
+    const user: User = await this.userService.findByEmail(userMail);
+
     // Create reset_token
     const resetToken: string = this.generateToken();
+
+    // Update user entity with the generated resetToken
+    await this.userService.updateResetToken(user, resetToken);
 
     // Append the token to the link to be sent
     const link: string = this.buildLink(resetToken);
@@ -146,5 +153,24 @@ export class AuthService {
     }
 
     // Send email with newly generated token
+  }
+
+  async resetPassword(data: NewPasswordDto) {
+    const { resetToken, password } = data;
+
+    // Check if token is related to a real user. If not, throw an exception
+    const exists = this.userService.existsByResetToken(resetToken);
+    if (!exists) {
+      throw new UnauthorizedException('resetToken not found');
+    }
+
+    // Find the user with the given token
+    const user: User = await this.userService.findByResetToken(resetToken);
+
+    // Hash received new password
+    const hashedPassword = await this.hashPassword(password);
+
+    // Ask the UserService to update Password
+    await this.userService.updatePassword(user, hashedPassword);
   }
 }
