@@ -46,10 +46,32 @@ export class UserService {
     };
   }
 
+  async updatePassword(user: User, password: string) {
+    const updatedUser: User = await this.userRepository.preload({
+      id: user.id,
+      password,
+    });
+    return await this.userRepository.save(updatedUser);
+  }
+
+  async updateResetToken(user: User, resetToken: string) {
+    const updatedUser: User = await this.userRepository.preload({
+      id: user.id,
+      resetToken,
+    });
+    return await this.userRepository.save(updatedUser);
+  }
+
   // Return the user with the given email
   async findByEmail(email: string): Promise<User> {
     // Get an user instance without relations
     return await this.userRepository.findOne({ where: { email } });
+  }
+
+  // Return the user with the given token
+  async findByResetToken(resetToken: string): Promise<User> {
+    // Get an user instance without relations
+    return await this.userRepository.findOne({ where: { resetToken } });
   }
 
   // Return the user with the given id
@@ -62,6 +84,10 @@ export class UserService {
 
   async existsByEmail(email: string) {
     return (await this.findByEmail(email)) ? true : false;
+  }
+
+  async existsByResetToken(resetToken: string) {
+    return (await this.findByEmail(resetToken)) ? true : false;
   }
 
   // Return basic user info without sending private information
