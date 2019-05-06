@@ -16,10 +16,12 @@ import { RegisterUserDto } from './dtos/registerUser.dto';
 import { JwtPayload } from './interfaces/jwt-payload.interface';
 import { User } from '../user/entities/user.entity';
 import { UserService } from '../user/user.service';
+import { MailService } from '../mail/mail.service';
 
 @Injectable()
 export class AuthService {
   constructor(
+    private readonly mailService: MailService,
     private readonly userService: UserService,
     private readonly jwtService: JwtService,
   ) {}
