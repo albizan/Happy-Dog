@@ -6,6 +6,7 @@ import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
 import { DogModule } from './dog/dog.module';
 import { AnnounceModule } from './announce/announce.module';
+import { MailModule } from './mail/mail.module';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { AnnounceModule } from './announce/announce.module';
     AuthModule,
     DogModule,
     AnnounceModule,
+    MailModule,
   ],
   controllers: [AppController],
   providers: [AppService],
