@@ -13,26 +13,24 @@ export class AuthController {
 
   @Post('login')
   async login(@Body() credentials: CredentialsDto): Promise<string> {
-    this.logger.log('User logs in');
+    this.logger.log('User tries to log in');
     return await this.authService.login(credentials);
   }
 
   @Post('register')
   register(@Body() registerUserDto: RegisterUserDto): Promise<string> {
-    this.logger.log('Register new User');
+    this.logger.log('Registering new User');
     return this.authService.register(registerUserDto);
   }
 
   @Post('send-reset-token')
-  sendResetToken(@Body() data: ResetPasswordRequestDto) {
-    return this.authService.sendResetToken(data.email);
+  async sendResetToken(@Body() data: ResetPasswordRequestDto): Promise<string> {
+    return await this.authService.sendResetToken(data.email);
   }
 
   // @Todo
   @Post('reset-password')
-  resetPassword(@Body() data: NewPasswordDto) {
-    return {
-      data,
-    };
+  async resetPassword(@Body() data: NewPasswordDto) {
+    return await this.authService.resetPassword(data);
   }
 }
