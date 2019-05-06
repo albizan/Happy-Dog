@@ -6,6 +6,7 @@ import { JwtStrategy } from './jwt.strategy';
 import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
 import { UserModule } from '../user/user.module';
+import { MailModule } from '../mail/mail.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { UserModule } from '../user/user.module';
       },
     }),
     forwardRef(() => UserModule),
+    MailModule,
   ],
   providers: [AuthService, JwtStrategy],
   controllers: [AuthController],
