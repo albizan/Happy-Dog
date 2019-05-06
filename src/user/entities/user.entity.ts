@@ -28,16 +28,27 @@ export class User {
   @Column()
   password: string;
 
+  @Column({
+    unique: true,
+    length: 32,
+    nullable: true,
+  })
+  resetToken: string;
+
   @CreateDateColumn()
   insertedAt: Date;
 
   @UpdateDateColumn()
   updatedAt: Date;
 
-  @OneToMany(type => Announce, announce => announce.user)
+  @OneToMany(type => Announce, announce => announce.user, {
+    nullable: true,
+  })
   announces: Announce[];
 
-  @ManyToMany(type => Role)
+  @ManyToMany(type => Role, {
+    nullable: true,
+  })
   @JoinTable({
     name: 'user_role',
   })
