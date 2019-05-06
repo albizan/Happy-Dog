@@ -122,30 +122,32 @@ export class AuthService {
   }
 
   async sendResetToken(userMail: string): Promise<boolean> {
-    // Create reset_token
-    const token: string = this.generateToken();
-    const link: string = this.buildLink(token);
+    /*
+      Verify the existence of the submitted email
+      If the usermail is not found, throw an exception, else continue
+    */
+    const exists = await this.userService.existsByEmail(userMail);
+    if (!exists) {
+      throw new UnauthorizedException('Cannot found this email');
+    }
 
-    // Send email with token
-    const transporter = nodemailer.createTransport({
-      service: 'gmail',
-      auth: {
-        user: process.env.EMAIL,
-        pass: process.env.EMAIL_PASSWORD,
-      },
-    });
-    const mailOptions = {
-      from: process.env.EMAIL,
-      to: userMail,
-      subject: 'Reset Your Password',
-      html: `<p>Click <a href="${link}">here</a> to reset your password</p>
-      <p>Or copy paste the following link in the browser: ${link}</p>`,
-    };
+    // Create reset_token
+    const resetToken: string = this.generateToken();
+
+    // Append the token to the link to be sent
+    const link: string = this.buildLink(resetToken);
+
     try {
-      transporter.sendMail(mailOptions);
+      // Try sending the token
+      this.mailService.sendResetToken(userMail, link);
+
+      // If sendResetToken succedes, return true
       return true;
-    } catch (err) {
+    } catch {
+      // If sendResetToken fails, throw an exception
       throw new InternalServerErrorException('Cannot send reset token');
     }
+
+    // Send email with newly generated token
   }
 }
