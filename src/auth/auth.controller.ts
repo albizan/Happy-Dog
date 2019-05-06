@@ -3,6 +3,7 @@ import { AuthService } from './auth.service';
 import { CredentialsDto } from './dtos/credentials.dto';
 import { RegisterUserDto } from './dtos/registerUser.dto';
 import { ResetPasswordRequestDto } from './dtos/resetPasswordRequest.dto';
+import { NewPasswordDto } from './dtos/newPassword.dto';
 
 @Controller()
 export class AuthController {
@@ -28,10 +29,10 @@ export class AuthController {
   }
 
   // @Todo
-  @Get('reset-password/:token')
-  resetPassword(@Param('token') token: string) {
+  @Post('reset-password')
+  resetPassword(@Body() data: NewPasswordDto) {
     return {
-      token,
+      data,
     };
   }
 }
