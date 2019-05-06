@@ -60,6 +60,10 @@ export class UserService {
     });
   }
 
+  async existsByEmail(email: string) {
+    return (await this.findByEmail(email)) ? true : false;
+  }
+
   // Return basic user info without sending private information
   toResponseObject(user: User): UserResponseDto {
     const { id, name } = user;
