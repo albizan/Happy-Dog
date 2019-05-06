@@ -15,9 +15,10 @@ export class MailService {
     subject: 'Reset Your Password',
   };
 
-  sendResetToken(destinationMail: string, link: string) {
+  async sendResetToken(destinationMail: string, link: string) {
     const mailOptions = this.buildOption(destinationMail, link);
-    this.transporter.sendMail(mailOptions);
+    const result = await this.transporter.sendMail(mailOptions);
+    return result.response;
   }
 
   private buildOption(destinationMail: string, link: string): object {
