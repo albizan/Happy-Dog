@@ -7,5 +7,5 @@ export class NewPasswordDto {
 
   @IsString()
   @IsNotEmpty()
-  readonly token: string;
+  readonly resetToken: string;
 }
