@@ -121,7 +121,7 @@ export class AuthService {
     return `http:localhost:4000/reset-password/${token}`;
   }
 
-  async sendResetToken(userMail: string): Promise<boolean> {
+  async sendResetToken(userMail: string): Promise<string> {
     /*
       Verify the existence of the submitted email
       If the usermail is not found, throw an exception, otherwise continue
@@ -139,10 +139,7 @@ export class AuthService {
 
     try {
       // Try sending the token
-      this.mailService.sendResetToken(userMail, link);
-
-      // If sendResetToken succedes, return true
-      return true;
+      return await this.mailService.sendResetToken(userMail, link);
     } catch {
       // If sendResetToken fails, throw an exception
       throw new InternalServerErrorException('Cannot send reset token');
