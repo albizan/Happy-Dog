@@ -21,6 +21,14 @@ export class DogService {
     return await this.dogRepository.save(dog);
   }
 
+  async update(id: string, data: Partial<CreateDogDto>): Promise<Dog> {
+    const updatedDog = await this.dogRepository.preload({
+      id,
+      ...data,
+    });
+    return await this.dogRepository.save(updatedDog);
+  }
+
   // Return a dog entity given its id
   async findById(id: string): Promise<Dog> {
     return await this.dogRepository.findOne(id);
